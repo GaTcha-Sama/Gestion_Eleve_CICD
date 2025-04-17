@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Main {
     private static Etudiant[] etudiants;
     private static Scanner scanner = new Scanner(System.in);
