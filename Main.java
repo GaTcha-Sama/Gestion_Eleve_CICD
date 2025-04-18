@@ -1,21 +1,29 @@
+// cSpell:disable
+
+// package cas1;
+
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Scanner;
+
 public class Main {
     private static Etudiant[] etudiants;
     private static Scanner scanner = new Scanner(System.in);
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public static void main(String[] args) {
-
         System.out.print("Entrez le nombre d'etudiants: ");
         int nbEtud = scanner.nextInt();
         etudiants = new Etudiant[nbEtud];
 
-        enregistrerEtudiant();
+        enregistrerEtudiants();
 
         while (true) {
             afficherMenu();
             int choix = scanner.nextInt();
+            
             switch (choix) {
                 case 1:
                     afficherParMerite();
@@ -24,77 +32,88 @@ public class Main {
                     afficherPremierEtudiant();
                     break;
                 case 3:
-                    ajouterDernierEtudiant();
+                    afficherDernierEtudiant();
                     break;
                 case 4:
-                    afficherNotes();
-                    break;
-                case 5:
                     reinitialiserListe();
                     break;
-                case 6:
-                    afficherMoyenne();
-                    break;
-                case 7:
+                case 5:
                     System.out.println("Au revoir!");
                     scanner.close();
                     return;
                 default:
-                    System.out.println("Choix invalide. Veuillez réessayer.");
+                    System.out.println("Choix invalide!");
             }
         }
     }
 
-    private static void enregistrerEtudiant() {
+    private static void enregistrerEtudiants() {
         for (int i = 0; i < etudiants.length; i++) {
-            System.out.println("Enregistrement de l'etudiant " + (i + 1) + ":");
-            System.out.print("Nom: ");
-            String nom = scanner.next();
+            System.out.println("\nEnregistrement de l'etudiant " + (i+1));
             System.out.print("Matricule: ");
             String matricule = scanner.next();
+            
+            System.out.print("Nom: ");
+            String nom = scanner.next();
+            
+            System.out.print("Genre (M/F): ");
+            String genre = scanner.next();
+            
             System.out.print("Date de naissance (dd/MM/yyyy): ");
-            String dateNaissance = scanner.next();
-            System.out.print("Notes: ");
-            String notes = scanner.next();
+            String dateStr = scanner.next();
+            LocalDate dateNaissance = LocalDate.parse(dateStr, DATE_FORMATTER);
+            
+            System.out.print("Moyenne: ");
+            double moyenne = scanner.nextDouble();
+
+            etudiants[i] = new Etudiant(matricule, nom, genre, dateNaissance, moyenne);
         }
     }
 
     private static void afficherMenu() {
-        System.out.println("\n ###### Menu: ######");
-        System.out.println("1. Afficher par mérite");
-        System.out.println("2. Afficher le premier étudiant");
-        System.out.println("3. Ajouter le dernier étudiant");
-        System.out.println("4. Afficher les notes");
-        System.out.println("5. Réinitialiser la liste");
-        System.out.println("6. Afficher la moyenne");
-        System.out.println("7. Quitter");
-        System.out.print("Entrez votre choix svp: ");
+        System.out.println("\n=== MENU ===");
+        System.out.println("1. Afficher les etudiants par ordre de merite");
+        System.out.println("2. Afficher les informations du premier etudiant");
+        System.out.println("3. Afficher les informations du dernier etudiant");
+        System.out.println("4. Reinitialiser la liste de la classe");
+        System.out.println("5. Quitter");
+        System.out.print("Votre choix: ");
     }
 
     private static void afficherParMerite() {
-        System.out.println("Afficher par mérite");
+        Etudiant[] copie = Arrays.copyOf(etudiants, etudiants.length);
+        Arrays.sort(copie, Comparator.comparingDouble(Etudiant::getMoyenne));
+        
+        System.out.println("\nListe des etudiants par ordre de merite:");
+        for (Etudiant etudiant : copie) {
+            etudiant.afficher();
+            System.out.println("------------------------");
+        }
     }
-     
+
     private static void afficherPremierEtudiant() {
-        System.out.println("Afficher le premier étudiant");
+        if (etudiants.length > 0) {
+            System.out.println("\nPremier etudiant:");
+            etudiants[0].afficher();
+        } else {
+            System.out.println("Aucun etudiant dans la liste!");
+        }
     }
 
-    private static void ajouterDernierEtudiant() {
-        System.out.println("Ajouter le dernier étudiant");
-    }
-
-    private static void afficherNotes() {
-        System.out.println("Afficher les notes");
-    }
-
-    private static void afficherMoyenne() {
-        System.out.println("Afficher la moyenne");
+    private static void afficherDernierEtudiant() {
+        if (etudiants.length > 0) {
+            System.out.println("\nDernier etudiant:");
+            etudiants[etudiants.length - 1].afficher();
+        } else {
+            System.out.println("Aucun etudiant dans la liste!");
+        }
     }
 
     private static void reinitialiserListe() {
-        System.out.println("Réinitialiser la liste");
+        etudiants = new Etudiant[0];
+        System.out.println("Liste reinitialisee avec succes!");
     }
-}
+} 
 
 
 
