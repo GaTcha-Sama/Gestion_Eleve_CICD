@@ -68,7 +68,7 @@ public class Main {
         System.out.println("5. Réinitialiser la liste");
         System.out.println("6. Afficher la moyenne");
         System.out.println("7. Quitter");
-        System.out.print("Entrez votre choix: ");
+        System.out.print("Entrez votre choix svp: ");
     }
 
     private static void afficherParMerite() {
