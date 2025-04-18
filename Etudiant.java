@@ -7,13 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Etudiant {
-    // Attributs privés de la classe
     private String matricule;
     private String nom;
     private LocalDate dateNaissance;
     private Map<String, Double> notes;
 
-    // Constructeur
     public Etudiant(String matricule, String nom, LocalDate dateNaissance) {
         this.matricule = matricule;
         this.nom = nom;
@@ -21,7 +19,6 @@ public class Etudiant {
         this.notes = new HashMap<>();
     }
 
-    // Getters et Setters
     public String getMatricule() {
         return matricule;
     }
