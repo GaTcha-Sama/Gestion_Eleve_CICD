@@ -36,9 +36,12 @@ public class GestionEtudiant {
                     afficherDernierEtudiant();
                     break;
                 case 4:
-                    reinitialiserListe();
+                    afficherMoyenneClasse();
                     break;
                 case 5:
+                    reinitialiserListe();
+                    break;
+                case 6:
                     System.out.println("Au revoir !");
                     scanner.close();
                     return;
@@ -62,8 +65,9 @@ public class GestionEtudiant {
         System.out.println("1. Afficher les étudiants par ordre de mérite");
         System.out.println("2. Afficher les informations du premier étudiant");
         System.out.println("3. Afficher les informations du dernier étudiant");
-        System.out.println("4. Réinitialiser la liste de la classe");
-        System.out.println("5. Quitter");
+        System.out.println("4. Afficher la moyenne de la classe");
+        System.out.println("5. Réinitialiser la liste de la classe");
+        System.out.println("6. Quitter");
         System.out.print("Votre choix : ");
     }
 
@@ -140,6 +144,21 @@ public class GestionEtudiant {
             System.out.println("\nDernier de la classe :");
             dernier.afficher();
         }
+    }
+
+    private static void afficherMoyenneClasse() {
+        if (etudiants == null || etudiants.length == 0) {
+            System.out.println("Aucun étudiant enregistré.");
+            return;
+        }
+
+        double sommeMoyennes = 0;
+        for (Etudiant etudiant : etudiants) {
+            sommeMoyennes += etudiant.getMoyenne();
+        }
+
+        double moyenneClasse = sommeMoyennes / etudiants.length;
+        System.out.println("\nMoyenne de la classe : " + String.format("%.2f", moyenneClasse));
     }
 
     private static void reinitialiserListe() {
