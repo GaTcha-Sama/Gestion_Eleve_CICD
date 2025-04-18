@@ -3,22 +3,22 @@
 // package cas1;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Etudiant {
     // Attributs privés de la classe
     private String matricule;
     private String nom;
-    private String genre;
     private LocalDate dateNaissance;
-    private double moyenne;
+    private Map<String, Double> notes;
 
     // Constructeur
-    public Etudiant(String matricule, String nom, String genre, LocalDate dateNaissance, double moyenne) {
+    public Etudiant(String matricule, String nom, LocalDate dateNaissance) {
         this.matricule = matricule;
         this.nom = nom;
-        this.genre = genre;
         this.dateNaissance = dateNaissance;
-        this.moyenne = moyenne;
+        this.notes = new HashMap<>();
     }
 
     // Getters et Setters
@@ -38,14 +38,6 @@ public class Etudiant {
         this.nom = nom;
     }
 
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
     public LocalDate getDateNaissance() {
         return dateNaissance;
     }
@@ -54,31 +46,30 @@ public class Etudiant {
         this.dateNaissance = dateNaissance;
     }
 
-    public double getMoyenne() {
-        return moyenne;
+    public void ajouterNote(String matiere, double note) {
+        this.notes.put(matiere, note);
     }
 
-    public void setMoyenne(double moyenne) {
-        this.moyenne = moyenne;
+    public double getMoyenne() {
+        if (notes.isEmpty()) return 0.0;
+        return notes.values().stream()
+                   .mapToDouble(Double::doubleValue)
+                   .average()
+                   .orElse(0.0);
     }
 
     public void afficher() {
-        System.out.println("Informations de l'etudiant :");
+        System.out.println("Informations de l'étudiant :");
         System.out.println("Matricule : " + this.matricule);
         System.out.println("Nom : " + this.nom);
-        System.out.println("Genre : " + this.genre);
         System.out.println("Date de naissance : " + this.dateNaissance);
-        System.out.println("Moyenne : " + this.moyenne);
+        System.out.println("Notes par matière :");
+        notes.forEach((matiere, note) -> 
+            System.out.println("- " + matiere + " : " + note));
+        System.out.println("Moyenne générale : " + String.format("%.2f", getMoyenne()));
     }
 
     public int calculerAge() {
         return LocalDate.now().getYear() - this.dateNaissance.getYear();
-    }
-
-    public void bonifier(double bonus) {
-        if (bonus > 0) {
-            double nouvelleMoyenne = this.moyenne + bonus;
-            this.moyenne = Math.min(nouvelleMoyenne, 20.0);
-        }
     }
 }
